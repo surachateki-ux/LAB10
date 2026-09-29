@@ -6,7 +6,7 @@ from ultralytics import YOLO
 
 app = Flask(__name__)
 # โหลด Model YOLO ของคุณ (ปรับตามชื่อไฟล์ที่มี เช่น 'best.pt' หรือ 'yolov8n.pt')
-model = YOLO('yolov8n.pt')
+model = YOLO('best.pt')
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -53,7 +53,8 @@ def predict():
         
         # ส่ง POST request ไปที่ PHP API
         res = requests.post(API_URL, json=payload, timeout=2)
-        print("API Response:", res.json())
+        print("API Status Code:", res.status_code)
+        print("API Raw Response:", res.text)
 
         return jsonify({'status': 'success', 'total': len(detections), 'detections': detections}), 200
 
